@@ -1,0 +1,228 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+p {
+    margin: 10px 50px;
+}
+
+.header {
+    background: #000000;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+
+}
+
+#logo-img {
+    width: 100px;
+    height: 100px;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+
+
+.cars-name{
+    border: none;
+    height: 50px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 160%;
+    font-weight: bold;
+    width: 100%;
+}
+
+.button-container {
+    height: 50px;
+    background-color: #383434;
+    border-top: 2px solid #fffcfc;
+    text-align: center;
+}
+
+.btn-add, .btn-edit, .btn-delete, .btn-list{
+    width: 150px;
+    background-color: #a8a8a8;
+    border: 1px solid #3b54e2;
+    padding: 10px 20px;
+    margin: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#search-input {
+    height: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+    margin-right: 300px;
+}
+
+#btn{
+    color: rgb(0, 0, 0);
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.btn-add:hover, .btn-edit:hover, .btn-delete:hover {
+    background-color: #91b3d8;
+}
+.content {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    position: sticky; /* Hoặc fixed nếu muốn luôn cố định */
+    top: 0; /* Khoảng cách từ phần tử đến đỉnh màn hình */
+    background-color: #fff; /* Màu nền để phân biệt với nội dung khác */
+    z-index: 100; /* Đảm bảo phần này nằm trên các phần tử khác */
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+.logo-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.logo-container img {
+    width: 80px; /* Kích thước logo */
+    height: auto;
+    transition: transform 0.3s ease-in-out;
+}
+.logo-container img:hover {
+    transform: scale(1.1); /* Phóng to logo khi hover */
+}
+#models-logo{
+    width: 200px;
+    height: 130px;
+}
+
+.car-model {
+    display: inline-block;
+    margin: 0 10px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 1px;
+    width: 20%;
+    box-shadow: 0 0 10px rgba(19, 4, 224, 0.842);
+}
+
+.car-model h2 {
+    margin-top: 0;
+}
+
+.car-list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.car-column {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.car-item {
+    width: 30%;
+    border: 1.5px solid #6b6a6a;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.car-image {
+    padding-left: 25px;
+    width: 90%;
+    height: 230px;
+    max-height: 230px;
+    object-fit: cover;
+}
+
+.car-slider {
+    position: relative;
+    width: 100%;
+    max-width: 1500px;
+    margin: 20px auto;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.slider-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide img {
+    width: 100%;
+    max-width: 1600px; /* Cố định chiều rộng tối đa */
+    height: 900px; /* Cố định chiều cao */
+    object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+    border-radius: 10px;
+}
+
+.prev-btn, .next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.prev-btn:hover, .next-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

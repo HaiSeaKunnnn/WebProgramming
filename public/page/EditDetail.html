@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chỉnh sửa thông tin xe</title>
+    <link rel="stylesheet" href="../css/EditDetail.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chỉnh sửa thông tin xe</h1>
+        <form id="edit-form" method="PUT">
+            <div class="form-group">
+                <label for="car-name">Tên xe:</label>
+                <input type="text" id="car-name" name="car-name" required>
+            </div>
+            <div class="form-group">
+                <label for="car-price">Giá bán:</label>
+                <input type="number" id="car-price" name="car-price" required>
+            </div>
+            <div class="form-group">
+                <label for="car-year">Năm sản xuất:</label>
+                <input type="number" id="car-year" name="car-year" required>
+            </div>
+            <div class="form-group">
+                <label for="car-seats">Số chỗ ngồi:</label>
+                <input type="number" id="car-seats" name="car-seats" required>
+            </div>
+            <div class="form-group">
+                <label for="car-fuel">Nhiên liệu:</label>
+                <input type="text" id="car-fuel" name="car-fuel" required>
+            </div>
+            <div class="form-group">
+                <label for="car-engine">Động cơ:</label>
+                <input type="text" id="car-engine" name="car-engine" required>
+            </div>
+            <div class="form-group">
+                <label for="car-image">Hình ảnh:</label>
+                <img id="image-preview" src="" alt="Xem trước hình ảnh" style="max-width: 400px; margin-top: 10px;">
+                <input type="file" id="car-image" name="car-image">
+                
+            </div>
+            <div class="form-group">
+                <label for="car-expert-review">Đánh giá từ chuyên gia:</label>
+                <textarea id="car-expert-review" name="car-expert-review" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="car-customer-review">Đánh giá từ khách hàng:</label>
+                <textarea id="car-customer-review" name="car-customer-review" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="uuDiem">Ưu Điểm:</label>
+                <div id="uuDiem-container">
+                    <div class="input-group">
+                        <input type="text" name="uuDiem[]" class="uuDiem-input" placeholder="Nhập ưu điểm">
+                        <button type="button" class="btn-remove">Xóa</button>
+                    </div>
+                </div>
+                <button type="button" id="add-uuDiem" class="btn-add">Thêm Ưu Điểm</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="nhuocDiem">Nhược Điểm:</label>
+                <div id="nhuocDiem-container">
+                    <div class="input-group">
+                        <input type="text" name="nhuocDiem[]" class="nhuocDiem-input" placeholder="Nhập nhược điểm">
+                        <button type="button" class="btn-remove">Xóa</button>
+                    </div>
+                </div>
+                <button type="button" id="add-nhuocDiem" class="btn-add">Thêm Nhược Điểm</button>
+            </div>
+            <div class="form-group">
+                <button type="submit" id="update-button" class="btn-submit">Cập Nhật</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Lấy ID xe từ URL
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const carId = urlParams.get('id');
+
+            // Hàm lấy thông tin xe từ server hoặc LocalStorage
+            function fetchCarDetails(carId) {
+                fetch(`/getCarById?id=${carId}`)
+                    .then(response => response.json())
+                    .then(car => {
+                        populateForm(car);
+                    })
+                    .catch(error => console.error('Lỗi khi lấy thông tin xe:', error));
+            }
+
+            // Hàm hiển thị thông tin xe lên form
+            function populateForm(car) {
+                console.log('Dữ liệu xe:', car); // Log dữ liệu xe để kiểm tra
+
+                // Hiển thị thông tin cơ bản
+                document.getElementById('car-name').value = car.Ten || '';
+                document.getElementById('car-price').value = car.GiaBan || '';
+                document.getElementById('car-year').value = car.NamSX || '';
+                document.getElementById('car-seats').value = car.SoChoNgoi || '';
+                document.getElementById('car-fuel').value = car.NhienLieu || '';
+                document.getElementById('car-engine').value = car.DongCo || '';
+
+                // Hiển thị hình ảnh
+                const imagePreview = document.getElementById('image-preview');
+                if (car.HinhAnh) {
+                    imagePreview.src = `${car.HinhAnh}`; // Đường dẫn đến hình ảnh
+                    imagePreview.style.display = 'block'; // Hiển thị hình ảnh
+                } else {
+                    imagePreview.src = '';
+                    imagePreview.style.display = 'none'; // Ẩn hình ảnh nếu không có
+                }
+
+                // Hiển thị đánh giá chuyên môn
+                document.getElementById('car-expert-review').value = car.DanhGiaChuyenMon?.TuChuyenGia || '';
+                document.getElementById('car-customer-review').value = car.DanhGiaChuyenMon?.KhachHang || '';
+
+                // Hiển thị ưu điểm
+                const uuDiemContainer = document.getElementById('uuDiem-container');
+                uuDiemContainer.innerHTML = ''; // Xóa nội dung cũ
+                if (Array.isArray(car.UuDiem)) {
+                    car.UuDiem.forEach(uuDiem => addInputField(uuDiemContainer, uuDiem, 'uuDiem[]', 'Nhập ưu điểm'));
+                }
+
+                // Hiển thị nhược điểm
+                const nhuocDiemContainer = document.getElementById('nhuocDiem-container');
+                nhuocDiemContainer.innerHTML = ''; // Xóa nội dung cũ
+                if (Array.isArray(car.NhuocDiem)) {
+                    car.NhuocDiem.forEach(nhuocDiem => addInputField(nhuocDiemContainer, nhuocDiem, 'nhuocDiem[]', 'Nhập nhược điểm'));
+                }
+            }
+
+            // Hàm thêm trường nhập liệu động
+            function addInputField(container, value = '', name, placeholder) {
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group';
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = name;
+                input.className = name.includes('uuDiem') ? 'uuDiem-input' : 'nhuocDiem-input';
+                input.placeholder = placeholder;
+                input.value = value;
+
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'btn-remove';
+                removeButton.textContent = 'Xóa';
+                removeButton.addEventListener('click', () => {
+                    container.removeChild(inputGroup);
+                });
+
+                inputGroup.appendChild(input);
+                inputGroup.appendChild(removeButton);
+                container.appendChild(inputGroup);
+            }
+            // Xử lý sự kiện thêm Ưu Điểm
+            document.getElementById('add-uuDiem').addEventListener('click', () => {
+                const uuDiemContainer = document.getElementById('uuDiem-container');
+                addInputField(uuDiemContainer, '', 'uuDiem[]', 'Nhập ưu điểm');
+            });
+
+            // Xử lý sự kiện thêm Nhược Điểm
+            document.getElementById('add-nhuocDiem').addEventListener('click', () => {
+                const nhuocDiemContainer = document.getElementById('nhuocDiem-container');
+                addInputField(nhuocDiemContainer, '', 'nhuocDiem[]', 'Nhập nhược điểm');
+            });
+
+            // Gọi hàm lấy thông tin xe khi trang được tải
+            if (carId) {
+                fetchCarDetails(carId);
+            } else {
+                console.error('Không tìm thấy ID xe trong URL.');
+            }
+
+            // Xử lý sự kiện submit form
+            document.getElementById('edit-form').addEventListener('submit', (e) => {
+                e.preventDefault(); // Ngăn chặn hành vi mặc định của form
+
+                const fileInput = document.getElementById('car-image');
+                const currentImage = document.getElementById('image-preview').src; // Lấy đường dẫn ảnh hiện tại
+
+                // Thu thập dữ liệu từ form
+                const updatedCar = {
+                    ID: carId, // Sử dụng ID từ URL
+                    Ten: document.getElementById('car-name').value,
+                    GiaBan: parseInt(document.getElementById('car-price').value),
+                    NamSX: parseInt(document.getElementById('car-year').value),
+                    SoChoNgoi: parseInt(document.getElementById('car-seats').value),
+                    NhienLieu: document.getElementById('car-fuel').value,
+                    DongCo: document.getElementById('car-engine').value,
+                    HinhAnh: fileInput.files.length > 0 ? fileInput.files[0].name : currentImage.split('/').pop(), // Lấy tên file mới hoặc giữ nguyên file cũ
+                    DanhGiaChuyenMon: {
+                        TuChuyenGia: document.getElementById('car-expert-review').value,
+                        KhachHang: document.getElementById('car-customer-review').value
+                    },
+                    UuDiem: Array.from(document.querySelectorAll('.uuDiem-input')).map(input => input.value),
+                    NhuocDiem: Array.from(document.querySelectorAll('.nhuocDiem-input')).map(input => input.value)
+                };
+
+                // Gửi yêu cầu cập nhật đến server
+                fetch('/updateCar', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedCar)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    alert('Cập nhật thông tin xe thành công!'); // Hiển thị thông báo
+                    window.location.href = '/Update'; // Chuyển hướng về trang Update
+                })
+                .catch(error => {
+                    console.error('Lỗi khi cập nhật thông tin xe:', error);
+                    alert('Đã xảy ra lỗi khi cập nhật thông tin xe. Vui lòng thử lại.');
+                });
+            });
+        });
+                
+    </script>
+</body>
+</html>

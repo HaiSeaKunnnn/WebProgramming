@@ -1,0 +1,165 @@
+/* Đặt font chữ và căn chỉnh cơ bản */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Container chính */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề */
+h1 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Nhóm form */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label */
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Input */
+input[type="text"],
+input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Input focus */
+input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Nút lưu */
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Nút lưu hover */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Nút lưu focus */
+button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Nút thêm ưu điểm và nhược điểm */
+.btn-add {
+    padding: 8px 12px;
+    background-color: #28a745; /* Màu xanh lá */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn-add:hover {
+    background-color: #218838; /* Màu xanh lá đậm hơn khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.btn-add:active {
+    background-color: #1e7e34; /* Màu xanh lá đậm hơn khi nhấn */
+    transform: scale(0.95); /* Thu nhỏ nhẹ khi nhấn */
+}
+
+/* Nút xóa */
+.btn-remove {
+    padding: 6px 10px;
+    background-color: #dc3545; /* Màu đỏ */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-left: 10px;
+}
+
+.btn-remove:hover {
+    background-color: #c82333; /* Màu đỏ đậm hơn khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.btn-remove:active {
+    background-color: #a71d2a; /* Màu đỏ đậm hơn khi nhấn */
+    transform: scale(0.95); /* Thu nhỏ nhẹ khi nhấn */
+}
+
+/* Căn chỉnh các nhóm input và nút xóa */
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* CSS cho hình ảnh xem trước */
+#image-preview {
+    
+    display: block; /* Hiển thị hình ảnh */
+    max-width: 100%; /* Đảm bảo hình ảnh không vượt quá chiều rộng container */
+    height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ */
+    border: 1px solid #ccc; /* Viền xám nhạt */
+    border-radius: 5px; /* Bo góc */
+    margin-top: 10px; /* Khoảng cách phía trên */
+    margin-bottom: 10px; /* Khoảng cách phía trên */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+}
+
+#image-preview img{
+    
+    justify-content: center; /* Căn giữa hình ảnh */
+    margin-top: 20px; /* Khoảng cách phía trên */
+}

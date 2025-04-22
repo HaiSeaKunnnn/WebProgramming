@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Sản Phẩm Xe</title>
+    <link rel="stylesheet" href="../css/Add.css">
+</head>
+<body>
+    <div class="container">
+        <div class="button-container">
+            <button class="btn-list">
+                <a id="btn" href="CarList">DANH SÁCH</a>
+            </button>
+            <button class="btn-ins">
+                <a id="btn" href="Add">THÊM</a>
+            </button>
+            <button class="btn-edit">
+                <a id="btn" href="Update">SỬA</a>
+            </button>
+            <button class="btn-delete">
+                <a id="btn" href="Delete">XÓA</a>
+            </button>
+            
+        </div>
+        <div class="header">
+            <h1>Thêm Sản Phẩm Xe</h1>
+        </div>
+        <div class="form-container">
+            
+            <div class="form-group">
+                <label for="jsonFile">Import File JSON:</label>
+                <input type="file" id="jsonFile" accept=".json">
+            </div>
+            <div class="form-group">
+                <button type="button" id="importJsonBtn" class="btn-submit">Import Dữ Liệu</button>
+            </div>
+            <form id="addCarForms" action="/Add" method="post">
+                <div class="form-group">
+                    <label for="loaiXe">Loại Xe:</label>
+                    <select id="loaiXe" name="loaiXe" >
+                        <option value="">-- Chọn loại xe --</option>
+                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                        <option value="Mercedes-AMG">Mercedes-AMG</option>
+                        <option value="Mercedes-Maybach">Mercedes-Maybach</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="id">ID:</label>
+                    <input type="text" id="id" name="id" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="ten">Tên:</label>
+                    <input type="text" id="ten" name="ten" required>
+                </div>
+                <div class="form-group">
+                    <label for="hinhAnh">Hình Ảnh:                         
+                    <input type="file" name="selectedFile" id="file" required>                     
+                </div>
+                <div class="form-group">
+                    <label for="giaBan">Giá Bán:</label>
+                    <input type="number" id="giaBan" name="giaBan" required>
+                </div>
+                <div class="form-group">
+                    <label for="namSX">Năm Sản Xuất:</label>
+                    <input type="number" id="namSX" name="namSX" required>
+                </div>
+                <div class="form-group">
+                    <label for="nhienLieu">Nhiên Liệu:</label>
+                    <input type="text" id="nhienLieu" name="nhienLieu" required>
+                </div>
+                <div class="form-group">
+                    <label for="dongCo">Động Cơ:</label>
+                    <input type="text" id="dongCo" name="dongCo" required>
+                </div>
+                <div class="form-group">
+                    <label for="soChoNgoi">Số Chỗ Ngồi:</label>
+                    <input type="number" id="soChoNgoi" name="soChoNgoi" required>
+                </div>
+                <div class="form-group">
+                    <label for="danhGiaChuyenGia">Đánh Giá Chuyên Gia:</label>
+                    <textarea type="text" id="danhGiaChuyenGia" name="danhGiaChuyenGia" rows="2" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="danhGiaKhachHang">Đánh Giá Từ Khách Hàng:</label>
+                    <textarea type="text" id="danhGiaKhachHang" name="danhGiaKhachHang" rows="2" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="uuDiem">Ưu Điểm:</label>
+                    <div id="uuDiem-container">
+                        <input type="text" name="uuDiem[]" class="uuDiem-input" >
+                    </div>
+                    <button type="button" id="add-uuDiem" class="btn-add">Thêm Ưu Điểm</button>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nhuocDiem">Nhược Điểm:</label>
+                    <div id="nhuocDiem-container">
+                        <input type="text" name="nhuocDiem[]" class="nhuocDiem-input" >
+                    </div>
+                    <button type="button" id="add-nhuocDiem" class="btn-add">Thêm Nhược Điểm</button>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-submit">Thêm Sản Phẩm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('importJsonBtn').addEventListener('click', async function () {
+            const fileInput = document.getElementById('jsonFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Vui lòng chọn một file JSON!');
+                return;
+            }
+
+            try {
+                // Đọc nội dung file JSON
+                const fileContent = await file.text();
+                const jsonData = JSON.parse(fileContent);
+
+                if (!Array.isArray(jsonData)) {
+                    alert('File JSON không hợp lệ. Dữ liệu phải là một mảng các đối tượng.');
+                    return;
+                }
+
+                console.log('Dữ liệu JSON:', jsonData);
+
+                // Gửi dữ liệu JSON lên server
+                const response = await fetch('/importData', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ data: jsonData }),
+                });
+
+                const result = await response.json();
+                console.log('Phản hồi từ server:', result);
+
+                if (response.ok) {
+                    alert(`Import thành công! Đã thêm ${result.insertedCount} sản phẩm.`);
+                } else {
+                    alert('Có lỗi xảy ra khi import dữ liệu.');
+                }
+            } catch (error) {
+                console.error('Lỗi khi xử lý file JSON:', error);
+                alert('Có lỗi xảy ra khi xử lý file JSON.');
+            }
+            });
+
+        document.getElementById('loaiXe').addEventListener('change', generateID);
+        document.getElementById('namSX').addEventListener('input', generateID);
+        
+        function generateID() {
+        const loaiXe = document.getElementById('loaiXe').value;
+        const namSX = document.getElementById('namSX').value;
+        if (!loaiXe || !namSX || namSX.length < 4) {
+        document.getElementById('id').value = ''; // Xóa ID nếu thông tin chưa đủ
+        return;
+        }   
+        fetch(`/NewID?loaiXe=${loaiXe}&namSX=${namSX}`, )
+            .then(response => response.json())
+            .then(data => {
+                if (data.id) {
+                    document.getElementById('id').value = data.id; // Hiển thị ID trên form
+                } else {
+                    alert('Có lỗi xảy ra, vui lòng thử lại.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Thêm trường nhập liệu động cho Ưu Điểm
+        // Thêm trường nhập liệu động cho Ưu Điểm
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('add-uuDiem').addEventListener('click', () => {
+                const container = document.getElementById('uuDiem-container');
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group';
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = 'uuDiem[]';
+                input.className = 'uuDiem-input';
+                input.placeholder = 'Nhập ưu điểm';
+
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.className = 'btn-remove';
+                removeButton.textContent = 'Xóa';
+                removeButton.addEventListener('click', () => {
+                    container.removeChild(inputGroup);
+                });
+
+                inputGroup.appendChild(input);
+                inputGroup.appendChild(removeButton);
+                container.appendChild(inputGroup);
+            });
+        });
+
+        // Thêm trường nhập liệu động cho Nhược Điểm
+        document.getElementById('add-nhuocDiem').addEventListener('click', () => {
+            const container = document.getElementById('nhuocDiem-container');
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group';
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'nhuocDiem[]';
+            input.className = 'nhuocDiem-input';
+            input.placeholder = 'Nhập nhược điểm';
+
+            const removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.className = 'btn-remove';
+            removeButton.textContent = 'Xóa';
+            removeButton.addEventListener('click', () => {
+                container.removeChild(inputGroup);
+            });
+
+            inputGroup.appendChild(input);
+            inputGroup.appendChild(removeButton);
+            container.appendChild(inputGroup);
+        });
+
+        console.log('JavaScript đã được tải.');
+        document.getElementById('addCarForms').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+
+            // Lấy tất cả các giá trị của Ưu Điểm
+            const uuDiemInputs = document.querySelectorAll('.uuDiem-input');
+            const uuDiem = Array.from(uuDiemInputs).map(input => input.value).filter(value => value.trim() !== '');
+
+            // Lấy tất cả các giá trị của Nhược Điểm
+            const nhuocDiemInputs = document.querySelectorAll('.nhuocDiem-input');
+            const nhuocDiem = Array.from(nhuocDiemInputs).map(input => input.value).filter(value => value.trim() !== '');
+
+            const carData = {
+                ID: formData.get('id'),
+                Ten: formData.get('ten'),
+                HinhAnh: formData.get('hinhAnh'),
+                GiaBan: parseInt(formData.get('giaBan')),
+                NamSX: parseInt(formData.get('namSX')),
+                NhienLieu: formData.get('nhienLieu'),
+                DongCo: formData.get('dongCo'),
+                SoChoNgoi: parseInt(formData.get('soChoNgoi')),
+                DanhGiaChuyenMon: {
+                    TuChuyenGia: formData.get('danhGiaChuyenGia'),
+                    KhachHang: formData.get('danhGiaKhachHang')
+                },
+                UuDiem: uuDiem, // Gửi danh sách Ưu Điểm
+                NhuocDiem: nhuocDiem // Gửi danh sách Nhược Điểm
+            };
+
+            console.log('Dữ liệu gửi:', carData);
+
+            const response = await fetch('/Add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(carData),
+            });
+
+            const result = await response.json();
+            console.log('Phản hồi từ server:', result);
+
+            if (response.ok) {
+                alert('Thêm sản phẩm thành công!');
+            } else {
+                alert('Có lỗi xảy ra, vui lòng thử lại.');
+            }
+        });
+    </script>
+</body>
+</html>

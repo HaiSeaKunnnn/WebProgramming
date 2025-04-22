@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercedes</title>
+    <link rel="stylesheet" href="../css/Home.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img id="logo-img" src="../image/logo/logo_mercedes.webp" alt="">
+        </div>
+        <div class="button-container">
+            <button class="btn-list">
+                <a id="btn" href="CarList">DANH SÁCH</a>
+            </button>
+            <button class="btn-add">
+                <a id="btn" href="Add">THÊM</a>
+            </button>
+            <button class="btn-edit">
+                <a id="btn" href="Update">SỬA</a>
+            </button>
+            <button class="btn-delete">
+                <a id="btn" href="Delete">XÓA</a>
+            </button>
+            
+        </div>
+        <div class="content">
+            <div class="car-model">     
+                <div class="logo-container">
+                    <img id="models-logo" src="../image/logo/Benz-log.jpg" alt="">
+                </div>
+
+            </div>
+            <div class="car-model">          
+                <div class="logo-container">
+                    <img id="models-logo" src="../image/logo/AMG-logo.png" alt="">
+                </div>
+
+            </div>
+            <div class="car-model">
+                <div class="logo-container">
+                    <img id="models-logo" src="../image/logo/Maybach-logo.jpg" alt="">
+                </div>
+            </div>           
+        </div>
+        
+        <div class="car-slider">
+            <div class="slider-container">
+                <div class="slide">
+                    <img src="../image/home/hinh1.1.jpg" alt="Mercedes Car 1">
+                </div>
+                <div class="slide">
+                    <img src="../image/home/hinh2.jpg!d" alt="Mercedes Car 2">
+                </div>
+                <div class="slide">
+                    <img src="../image/home/hinh3.avif" alt="Mercedes Car 3">
+                </div>
+            </div>
+            <button class="prev-btn">&#10094;</button>
+            <button class="next-btn">&#10095;</button>
+        </div>
+
+        <script>
+            const sliderContainer = document.querySelector('.slider-container');
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            
+            let currentIndex = 0;
+            
+            function showSlide(index) {
+                const slideWidth = slides[0].clientWidth;
+                sliderContainer.style.transform = `translateX(-${index * slideWidth}px)`;
+            }
+            
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+                showSlide(currentIndex);
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+                showSlide(currentIndex);
+            });
+            
+        </script>
+        
+        <div class="footer">
+            <p>&copy; 2025 Mercedes-Benz. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

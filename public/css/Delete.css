@@ -1,0 +1,167 @@
+/* Tổng quan */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    height: 50px;
+    background-color: #383434;
+    border-top: 2px solid #fffcfc;
+    text-align: center;
+}
+
+.btn-add, .btn-edit, .btn-deletee, .btn-list{
+    width: 150px;
+    background-color: #a8a8a8;
+    border: 1px solid #3b54e2;
+    padding: 10px 20px;
+    margin: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#btn{
+    color: rgb(0, 0, 0);
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#logo-img {
+    max-width: 150px;
+    height: auto;
+}
+
+/* Tiêu đề */
+.content h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+/* Thanh tìm kiếm và sắp xếp */
+.search-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-button,
+.sort-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.search-button:hover,
+.sort-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.search-button:active,
+.sort-button:active {
+    background-color: #003f7f;
+    transform: scale(0.95);
+}
+
+/* Danh sách xe */
+.car-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.car-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.car-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.car-item img {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.cars-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.car-item p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Nút xóa */
+.btn-group {
+    margin-top: 10px;
+}
+
+.btn-delete {
+    padding: 10px 15px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+.btn-delete:active {
+    background-color: #a71d2a;
+    transform: scale(0.95);
+}
+

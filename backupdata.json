@@ -1,0 +1,34 @@
+[
+    {
+        "ID": "MBN250001",
+        "Ten": "Mercedes-Benz C300",
+        "HinhAnh": "c300.jpg",
+        "GiaBan": 2500000000,
+        "NamSX": 2024,
+        "NhienLieu": "Xăng",
+        "DongCo": "2.0L",
+        "SoChoNgoi": 4,
+        "DanhGiaChuyenMon": {
+            "TuChuyenGia": "Thiết kế sang trọng, động cơ mạnh mẽ.",
+            "KhachHang": "Rất hài lòng với chất lượng."
+        },
+        "UuDiem": "Nội thất cao cấp, vận hành êm ái.",
+        "NhuocDiem": "Giá thành cao."
+    },
+    {
+        "ID": "MBA250001",
+        "Ten": "Mercedes-AMG G63",
+        "HinhAnh": "g63.jpg",
+        "GiaBan": 12000000000,
+        "NamSX": 2024,
+        "NhienLieu": "Xăng",
+        "DongCo": "4.0L V8",
+        "SoChoNgoi": 5,
+        "DanhGiaChuyenMon": {
+            "TuChuyenGia": "Hiệu suất cao, thiết kế mạnh mẽ.",
+            "KhachHang": "Khả năng off-road tuyệt vời."
+        },
+        "UuDiem": "Khả năng off-road tốt, nội thất sang trọng.",
+        "NhuocDiem": "Tiêu hao nhiên liệu cao."
+    }
+]

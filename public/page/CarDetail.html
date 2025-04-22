@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Xe</title>
+    <link rel="stylesheet" href="../css/CarDetail.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Thông Tin Chi Tiết Xe</h1>
+        </div>
+
+        <!-- Nội dung chi tiết xe -->
+        <div id="car-detail" class="car-detail">
+            <!-- Thông tin chi tiết xe sẽ được hiển thị ở đây -->
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2025 Mercedes-Benz. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // Lấy thông tin xe từ URL
+        const params = new URLSearchParams(window.location.search);
+        const carData = JSON.parse(decodeURIComponent(params.get('car')));
+
+        // Hiển thị thông tin xe
+        const carDetail = document.getElementById('car-detail');
+        carDetail.innerHTML = `
+            <h2>${carData.Ten}</h2>
+            <img src="/image/${carData.HinhAnh}" alt="${carData.Ten}" class="car-image">
+            <p><strong>Giá bán:</strong> ${carData.GiaBan.toLocaleString('vi-VN')} VND</p>
+            <p><strong>Năm sản xuất:</strong> ${carData.NamSX}</p>
+            <p><strong>Số chỗ ngồi:</strong> ${carData.SoChoNgoi}</p>
+            <p><strong>Nhiên liệu:</strong> ${carData.NhienLieu}</p>
+            <p><strong>Động cơ:</strong> ${carData.DongCo}</p>
+            <p><strong>Đánh giá chuyên môn:</strong></p>
+            <ul>
+                <li><strong>Từ chuyên gia:</strong> ${carData.DanhGiaChuyenMon.TuChuyenGia}</li>
+                <li><strong>Khách hàng:</strong> ${carData.DanhGiaChuyenMon.KhachHang}</li>
+            </ul>
+            <p><strong>Ưu điểm:</strong></p>
+            <ul>
+                ${carData.UuDiem.map(uuDiem => `<li>${uuDiem}</li>`).join('')}
+            </ul>
+            ${carData.NhuocDiem ? `
+            <p><strong>Nhược điểm:</strong></p>
+            <ul>
+                ${carData.NhuocDiem.map(nhuocDiem => `<li>${nhuocDiem}</li>`).join('')}
+            </ul>` : ''}
+        `;
+    </script>
+</body>
+</html>

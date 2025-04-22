@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xóa Sản Phẩm</title>
+    <link rel="stylesheet" href="../css/Delete.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img id="logo-img" src="../logo/logo_mercedes.webp" alt="Logo">
+        </div>
+        <div class="button-container">
+            <button class="btn-list">
+                <a id="btn" href="CarList">DANH SÁCH</a>
+            </button>
+            <button class="btn-add">
+                <a id="btn" href="Add">THÊM</a>
+            </button>
+            <button class="btn-edit">
+                <a id="btn" href="Update">SỬA</a>
+            </button>
+            <button class="btn-deletee">
+                <a id="btn" href="Delete">XÓA</a>
+            </button>
+            
+        </div>   
+        <div class="content">
+            <h1>Danh sách xe - Xóa sản phẩm</h1>
+        </div>
+
+        <div class="search-container">
+            <button id="view-all" class="sort-button">Hiển thị tất cả</button>
+            <input type="text" id="search-input" class="search-input" placeholder="Nhập từ khóa tìm kiếm...">
+            <button id="search-button" class="search-button">Tìm kiếm</button>
+            <div class="sort-buttons">
+                <button id="sort-asc" class="sort-button">Sắp xếp tăng dần</button>
+                <button id="sort-desc" class="sort-button">Sắp xếp giảm dần</button>
+            </div>
+        </div>
+        
+        <div id="car-list" class="car-list">
+            <!-- Danh sách xe sẽ được hiển thị tại đây -->
+        </div>
+    </div>
+        
+    <script>
+        // Hàm hiển thị danh sách xe
+        function displayCars(cars) {
+            const carList = document.getElementById('car-list');
+            if (cars.length === 0) {
+                carList.innerHTML = '<p>Không tìm thấy kết quả nào.</p>';
+                return;
+            }
+            let carListHTML = '';
+            cars.forEach(car => {
+                carListHTML += `
+                    <div class="car-item">
+                        <div class="cars-name">${car.Ten}</div>
+                        <img src="/image/${car.HinhAnh}" alt="${car.Ten}" class="car-image">
+                        <p><strong>Giá bán:</strong> ${car.GiaBan.toLocaleString('vi-VN')} VND</p>
+                        <p><strong>Năm sản xuất:</strong> ${car.NamSX}</p>
+                        <p><strong>Số chỗ ngồi:</strong> ${car.SoChoNgoi}</p>
+                        <div class="btn-group">
+                            <button class="btn-delete" onclick="deleteCar('${car.ID}')">Xóa sản phẩm</button>
+                        </div>               
+                    </div>
+                `;
+            });
+            carList.innerHTML = carListHTML;
+        }
+
+        // Hàm xóa xe
+        function deleteCar(carId) {
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                fetch(`/deleteCar?id=${carId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    alert('Xóa sản phẩm thành công!');
+                    fetchCars(); // Tải lại danh sách xe sau khi xóa
+                })
+                .catch(error => {
+                    console.error('Lỗi khi xóa sản phẩm:', error);
+                    alert('Đã xảy ra lỗi khi xóa sản phẩm. Vui lòng thử lại.');
+                });
+            }
+        }
+
+        // Hàm tải danh sách xe từ server
+        function fetchCars() {
+            fetch('/list')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Danh sách xe từ server:', data);
+                    displayCars(data); // Hiển thị danh sách xe
+                })
+                .catch(error => console.error('Lỗi khi lấy danh sách xe:', error));
+        }
+
+        // Sự kiện tìm kiếm
+        document.getElementById('search-button').addEventListener('click', () => {
+            const searchInput = document.getElementById('search-input').value.trim().toLowerCase();
+            if (!searchInput) {
+                alert('Vui lòng nhập từ khóa tìm kiếm.');
+                return;
+            }
+            const url = `/SearchTo?keyword=${encodeURIComponent(searchInput)}`;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(filteredCars => {
+                    console.log('Kết quả tìm kiếm:', filteredCars);
+                    displayCars(filteredCars);
+                })
+                .catch(error => console.error('Lỗi khi tìm kiếm xe:', error));
+        });
+
+        // Sự kiện sắp xếp tăng dần
+        document.getElementById('sort-asc').addEventListener('click', () => {
+            fetch('/sortCars?order=asc')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(sortedCars => {
+                    displayCars(sortedCars);
+                })
+                .catch(error => console.error('Lỗi khi sắp xếp xe tăng dần:', error));
+        });
+
+        // Sự kiện sắp xếp giảm dần
+        document.getElementById('sort-desc').addEventListener('click', () => {
+            fetch('/sortCars?order=desc')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(sortedCars => {
+                    displayCars(sortedCars);
+                })
+                .catch(error => console.error('Lỗi khi sắp xếp xe giảm dần:', error));
+        });
+
+        // Hiển thị tất cả xe
+        document.getElementById('view-all').addEventListener('click', fetchCars);
+
+        // Tải danh sách xe khi trang được tải
+        document.addEventListener('DOMContentLoaded', fetchCars);
+    </script>
+</body>
+</html>

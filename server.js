@@ -3,11 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const app = express();
 const port = 4000;
-const MongoClient = require('mongodb').MongoClient;
-const url = 'mongodb://localhost:27017';
-const dbName = 'Vehicle';
-const collectionName = 'Cars';
-const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+
+
 
 // Middleware 
 app.use(express.urlencoded({ extended: true }));
@@ -15,6 +12,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public/image/')));
 app.use(express.json());
 
+
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017';
+const dbName = 'Vehicle';
+const collectionName = 'Cars';
+const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
 //ham ket noi db 
 async function connectDB() {
     try {
@@ -94,8 +97,9 @@ app.get('/searchCars', async (req, res) => {
         const collection = db.collection(collectionName);
 
         // Tạo bộ lọc MongoDB
+        // Lọc theo khoảng giá
         const query = {
-            GiaBan: { $gte: minPrice, $lte: maxPrice } // Lọc theo khoảng giá
+            GiaBan: { $gte: minPrice, $lte: maxPrice } 
         };
 
         // Lọc theo nhiên liệu
@@ -125,6 +129,7 @@ app.get('/searchCars', async (req, res) => {
 
         console.log('MongoDB Query:', query);
 
+        
         // Lấy dữ liệu từ MongoDB với bộ lọc
         const cars = await collection.find(query).toArray();
         res.json(cars);
@@ -358,7 +363,26 @@ app.delete('/deleteCar', async (req, res) => {
     }
 });
 
+app.delete('/deleteMultipleCars', async (req, res) => {
+    const carIds = req.body.ids; // Mảng các ID xe cần xóa
+
+    try {
+        await connectDB();
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+
+        const result = await collection.deleteMany({ ID: { $in: carIds } });
+
+        res.json({
+            message: 'Xóa nhiều xe thành công!',
+            deletedCount: result.deletedCount
+        });
+    } catch (error) {
+        console.error('❌ Lỗi khi xóa nhiều xe:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
-app.use(express.json());

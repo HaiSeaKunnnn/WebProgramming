@@ -28,6 +28,25 @@ body {
     background-color: #000;
 }
 
+.btn-add, .btn-editt, .btn-deletee, .btn-list{
+    width: 150px;
+    background-color: #a8a8a8;
+    border: 1px solid #3b54e2;
+    padding: 10px 20px;
+    margin: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+
+}
+
+#btn{
+    color: rgb(0, 0, 0);
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: none;
+}
+
 .header img {
     height: 70px;
 }
@@ -123,7 +142,7 @@ body {
 }
 
 .cars-name {
-    font-size: 1.1em;
+    font-size: 1em;
     font-weight: bold;
     margin-bottom: 10px;
     color: #333;

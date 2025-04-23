@@ -39,6 +39,19 @@
                 <button id="sort-desc" class="sort-button">Sắp xếp giảm dần</button>
             </div>
         </div>
+
+        <div class="delete-container">
+            <h3>Xóa nhiều xe</h3>
+            <div class="dropdown-delete">
+                <select id="delete-dropdown" class="delete-dropdown" multiple>
+                    <!-- Danh sách xe sẽ được thêm động -->
+                </select>
+            </div>
+            <div id="checkbox-list" class="checkbox-list">
+                <!-- Checkbox sẽ được thêm động -->
+            </div>
+            <button id="delete-selected" class="delete-button">Xóa các xe đã chọn</button>
+        </div>
         
         <div id="car-list" class="car-list">
             <!-- Danh sách xe sẽ được hiển thị tại đây -->
@@ -106,6 +119,7 @@
                 .then(data => {
                     console.log('Danh sách xe từ server:', data);
                     displayCars(data); // Hiển thị danh sách xe
+                    loadDeleteOptions(data); // Hiển thị danh sách trong dropdown và checkbox
                 })
                 .catch(error => console.error('Lỗi khi lấy danh sách xe:', error));
         }
@@ -131,6 +145,8 @@
                 })
                 .catch(error => console.error('Lỗi khi tìm kiếm xe:', error));
         });
+
+        
 
         // Sự kiện sắp xếp tăng dần
         document.getElementById('sort-asc').addEventListener('click', () => {
@@ -165,6 +181,60 @@
         // Hiển thị tất cả xe
         document.getElementById('view-all').addEventListener('click', fetchCars);
 
+        // Hiển thị danh sách xe trong dropdown và checkbox
+        function loadDeleteOptions(cars) {
+            const deleteDropdown = document.getElementById('delete-dropdown');
+            const checkboxList = document.getElementById('checkbox-list');
+
+            deleteDropdown.innerHTML = '';
+            checkboxList.innerHTML = '';
+
+            cars.forEach(car => {
+                // Thêm vào dropdown
+                const option = document.createElement('option');
+                option.value = car.ID;
+                option.textContent = car.Ten;
+                deleteDropdown.appendChild(option);
+
+                // Thêm vào danh sách checkbox
+                const label = document.createElement('label');
+                label.innerHTML = `
+                    <input type="checkbox" class="delete-checkbox" value="${car.ID}">
+                    ${car.Ten}
+                `;
+                checkboxList.appendChild(label);
+            });
+        }
+
+        // Xóa các xe đã chọn
+        document.getElementById('delete-selected').addEventListener('click', () => {
+            const selectedCheckboxes = Array.from(document.querySelectorAll('.delete-checkbox:checked'));
+            const selectedIds = selectedCheckboxes.map(checkbox => checkbox.value);
+
+            if (selectedIds.length === 0) {
+                alert('Vui lòng chọn ít nhất một xe để xóa.');
+                return;
+            }
+
+            // Gửi yêu cầu xóa đến server
+            fetch('/deleteMultipleCars', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids: selectedIds })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    // Tải lại danh sách xe sau khi xóa
+                    fetch('/list')
+                        .then(response => response.json())
+                        .then(updatedCars => {
+                            loadDeleteOptions(updatedCars);
+                            displayCars(updatedCars);
+                        });
+                })
+                .catch(error => console.error('Lỗi khi xóa nhiều xe:', error));
+        });
         // Tải danh sách xe khi trang được tải
         document.addEventListener('DOMContentLoaded', fetchCars);
     </script>

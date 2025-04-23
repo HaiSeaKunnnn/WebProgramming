@@ -87,8 +87,11 @@ app.get('/searchCars', async (req, res) => {
     const year = parseInt(req.query.year) || 0;
     const minPrice = parseInt(req.query.minPrice) || 0;
     const maxPrice = parseInt(req.query.maxPrice) || Infinity;
+
     const keyword = req.query.keyword ? req.query.keyword.trim().toLowerCase() : '';
+    
     console.log('Search Params:', { fuel, seats, year, minPrice, maxPrice, keyword});
+
 
     try {
         // Kết nối đến MongoDB
@@ -153,7 +156,27 @@ app.get('/', (req, res) => {
   app.get('/CarDetail.html', (req, res) => {
       res.sendFile(path.join (__dirname , '/public/page/CarDetail.html'));
   });
-  
+  app.get('/getCarDetail', async (req, res) => {
+    const carId = req.query.id; // Lấy ID xe từ query string
+
+    try {
+        await connectDB();
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+
+        // Tìm xe theo ID
+        const car = await collection.findOne({ ID: carId });
+
+        if (!car) {
+            return res.status(404).json({ error: 'Không tìm thấy xe.' });
+        }
+
+        res.json(car);
+    } catch (error) {
+        console.error('❌ Lỗi khi lấy thông tin chi tiết xe:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
   // trang add
   app.get('/Add', (req, res) => {
       res.sendFile(path.join (__dirname , '/public/page/Add.html'));
@@ -233,6 +256,7 @@ app.get('/', (req, res) => {
     }
 });
 
+
 app.post('/importData', async (req, res) => {
     try {
         const { data } = req.body;
@@ -240,7 +264,6 @@ app.post('/importData', async (req, res) => {
         if (!Array.isArray(data)) {
             return res.status(400).json({ error: 'Dữ liệu không hợp lệ. Phải là một mảng các đối tượng.' });
         }
-
         // Kết nối đến MongoDB
         await connectDB();
         const db = client.db(dbName);

@@ -87,21 +87,6 @@
         })
         .catch(error => console.error('Lỗi khi lấy danh sách xe:', error));
 
-        document.querySelectorAll('.dropdown-group').forEach(group => {
-            group.addEventListener('mouseenter', () => {
-                const groupName = group.getAttribute('data-group');
-                document.querySelectorAll('.options-group').forEach(optionGroup => {
-                    if (optionGroup.getAttribute('data-group') === groupName) {
-                        optionGroup.classList.add('active');
-                    } else {
-                        optionGroup.classList.remove('active');
-                    }
-                });
-            });
-        });
-
-
-
         document.getElementById('search-button').addEventListener('click', () => {
             const searchInput = document.getElementById('search-input').value.trim().toLowerCase();
             if (!searchInput) {

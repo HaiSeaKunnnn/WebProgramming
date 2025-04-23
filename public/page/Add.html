@@ -115,17 +115,14 @@
                 alert('Vui lòng chọn một file JSON!');
                 return;
             }
-
             try {
                 // Đọc nội dung file JSON
                 const fileContent = await file.text();
                 const jsonData = JSON.parse(fileContent);
-
                 if (!Array.isArray(jsonData)) {
                     alert('File JSON không hợp lệ. Dữ liệu phải là một mảng các đối tượng.');
                     return;
                 }
-
                 console.log('Dữ liệu JSON:', jsonData);
 
                 // Gửi dữ liệu JSON lên server
@@ -158,14 +155,14 @@
         const loaiXe = document.getElementById('loaiXe').value;
         const namSX = document.getElementById('namSX').value;
         if (!loaiXe || !namSX || namSX.length < 4) {
-        document.getElementById('id').value = ''; // Xóa ID nếu thông tin chưa đủ
+        document.getElementById('id').value = ''; 
         return;
         }   
         fetch(`/NewID?loaiXe=${loaiXe}&namSX=${namSX}`, )
             .then(response => response.json())
             .then(data => {
                 if (data.id) {
-                    document.getElementById('id').value = data.id; // Hiển thị ID trên form
+                    document.getElementById('id').value = data.id; 
                 } else {
                     alert('Có lỗi xảy ra, vui lòng thử lại.');
                 }

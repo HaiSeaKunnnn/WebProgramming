@@ -93,16 +93,13 @@
 
             // Hàm hiển thị thông tin xe lên form
             function populateForm(car) {
-                console.log('Dữ liệu xe:', car); // Log dữ liệu xe để kiểm tra
-
-                // Hiển thị thông tin cơ bản
+                console.log('Dữ liệu xe:', car); 
                 document.getElementById('car-name').value = car.Ten || '';
                 document.getElementById('car-price').value = car.GiaBan || '';
                 document.getElementById('car-year').value = car.NamSX || '';
                 document.getElementById('car-seats').value = car.SoChoNgoi || '';
                 document.getElementById('car-fuel').value = car.NhienLieu || '';
                 document.getElementById('car-engine').value = car.DongCo || '';
-
                 // Hiển thị hình ảnh
                 const imagePreview = document.getElementById('image-preview');
                 if (car.HinhAnh) {
@@ -112,18 +109,15 @@
                     imagePreview.src = '';
                     imagePreview.style.display = 'none'; // Ẩn hình ảnh nếu không có
                 }
-
                 // Hiển thị đánh giá chuyên môn
                 document.getElementById('car-expert-review').value = car.DanhGiaChuyenMon?.TuChuyenGia || '';
                 document.getElementById('car-customer-review').value = car.DanhGiaChuyenMon?.KhachHang || '';
-
                 // Hiển thị ưu điểm
                 const uuDiemContainer = document.getElementById('uuDiem-container');
                 uuDiemContainer.innerHTML = ''; // Xóa nội dung cũ
                 if (Array.isArray(car.UuDiem)) {
                     car.UuDiem.forEach(uuDiem => addInputField(uuDiemContainer, uuDiem, 'uuDiem[]', 'Nhập ưu điểm'));
                 }
-
                 // Hiển thị nhược điểm
                 const nhuocDiemContainer = document.getElementById('nhuocDiem-container');
                 nhuocDiemContainer.innerHTML = ''; // Xóa nội dung cũ
